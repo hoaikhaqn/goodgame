@@ -9,6 +9,10 @@ header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+
+            &[data-active='true'] {
+                display: none;
+            }
         }
 
         &__phone {
@@ -31,15 +35,56 @@ header {
             margin-left: 10px;
         }
 
-        &__account {
-            .account__icon {
+        .search_button {
+            cursor: pointer;
+
+            .search_button__icon {
                 margin-right: 5px;
                 vertical-align: middle;
             }
 
-            a {
+            p {
+                margin: 0;
                 font-size: 1.4em;
                 font-family: $font-russo;
+            }
+        }
+
+        &__searchbar {
+            display: none;
+
+            &[data-active='true'] {
+                display: block;
+            }
+
+            input {
+                width: 100%;
+                padding: 0px 20px 5px 10px;
+                font-size: 19px;
+                background: transparent;
+                box-shadow: none;
+                border: none;
+                border-bottom: 2px solid #453f4a;
+                outline: none;
+                color: #fff;
+                font-family: $font-kanit;
+                font-weight: bold;
+                position: relative;
+            }
+
+            .btn__close {
+                position: absolute;
+                top: 0;
+                right: 20px;
+                z-index: 100;
+                outline: none;
+                border: none;
+                background: transparent;
+
+                span {
+                    font-size: 30px;
+                    color: #fff;
+                }
             }
         }
     }
@@ -81,9 +126,57 @@ header {
     }
 }
 
+.dropdown-wrapper {
+    display: inline-block;
+
+    .dropdown-header {
+        margin: 0;
+        padding: 0;
+
+        .dropdown-header__heading {
+            cursor: pointer;
+            transition: .3s;
+            padding: 2px 5px;
+
+            &:hover {
+                background: $secondary-color;
+            }
+
+            .dropdown-header__icon {
+                margin: 0;
+                color: #fff;
+                text-align: center;
+
+                span {
+                    font-size: 3rem;
+                }
+            }
+        }
+    }
+
+    .dropdown-list {
+        display: none;
+
+        .dropdown-list__item {
+            button {}
+        }
+    }
+}
+
 .card_game {
     margin: 1rem 0;
     font-size: 14px;
+    transition: .3s ease-in-out;
+
+    &:not([data-loading="true"]) {
+        opacity: 0;
+        transform: scale(.5);
+    }
+
+    &[data-loading="true"] {
+        opacity: 1;
+        transform: scale(1);
+    }
 
     &__preview {
         perspective: 1000px;
@@ -238,7 +331,7 @@ header {
 
                         span {
                             display: block;
-                            font-size: 1.5rem;
+                            font-size: 2.5rem;
                             font-weight: bold;
                             color: #fff;
                             transform: skew(-20deg);

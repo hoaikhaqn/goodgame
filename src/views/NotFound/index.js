@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function SignIn() {
+export default function NotFound() {
     return (
         <div>
-            Login
+            <h2>Not found 404</h2>
         </div>
     )
 }

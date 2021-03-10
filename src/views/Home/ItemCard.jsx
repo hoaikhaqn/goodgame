@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 
 export default function ItemCard(props) {
+    const [itemLoaded, setItemLoaded] = useState(false);
     const { dataItem, onOpenDetailPopup } = props
 
     const handlePlayVideo = (e) => {
@@ -15,11 +16,11 @@ export default function ItemCard(props) {
     }
 
     return (
-        <div className="card_game">
+        <div className="card_game" data-loading={itemLoaded}>
             <div className="card_game__wrapper">
                 <div className="card_game__preview">
                     <div className="preview_inner">
-                        <img className="card_game__preview--front" src={dataItem.urlImage} alt="image" onMouseEnter={(e) => { handlePlayVideo(e) }} />
+                        <img className="card_game__preview--front" onLoad={() => setItemLoaded(true)} src={dataItem.urlImage} alt="image" onMouseEnter={(e) => { handlePlayVideo(e) }} />
                         <video className="card_game__preview--back video_preview" src={dataItem.urlShortVideo} alt="clip" muted loop onMouseLeave={(e) => { handleStopVideo(e) }}></video>
                     </div>
                 </div>
@@ -43,7 +44,7 @@ export default function ItemCard(props) {
                 <ul className="card_game__genres items-inline">
                     {
                         dataItem.genres.map((genre_item, key) =>
-                            <li key={key} className="genre__item">{key > 0 ? ', ' : ''}<span>{genre_item}</span></li>
+                            <li key={genre_item.id} className="genre__item">{key > 0 ? ', ' : ''}<span>{genre_item.name}</span></li>
                         )
                     }
                 </ul>
