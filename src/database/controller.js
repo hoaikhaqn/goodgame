@@ -23,37 +23,42 @@ const db = {
                                 let genres = game.genres;
                                 return genres.find(genre => genre.id == params.idCategory)
                             })
-                            console.log("Cate", games);
                         }
-
-
                         if (params.name) {
                             games = games.filter(game => {
                                 let titleGame = game.name.toLowerCase();
                                 return titleGame.includes(params.name.toLowerCase())
                             })
-                            console.log("Name", games);
                         }
-
-
                         if (params.orderBy) {
-                            if (params.orderBy.releaseDate) {
+                            if (params.orderBy.release_date) {
                                 games.sort((a, b) => {
+                                    if(params.orderBy.releaseDate == 'asc')
+                                    return new Date(a.releaseDate) - new Date(b.releaseDate);
+                                    else
                                     return new Date(b.releaseDate) - new Date(a.releaseDate);
                                 })
                             }
-                            console.log("Order By", games);
+                            if (params.orderBy.name) {
+                                games.sort((a, b) => {
+                                    if(params.orderBy.name == 'asc'){
+                                        return (a.name < b.name) ? -1 : 1;
+                                    }
+                                    else{
+                                        return (a.name > b.name) ? -1 : 1;
+                                    }
+                                    
+                                })
+                            }
                         }
                     }
-                    console.log(games);
-
                     resolve(games)
                 } catch (error) {
                     reject(error);
                 }
             })
         },
-        getGamesByCategory: (idCategory, sort) => {
+        getGamesByCategory: (idCategory) => {
             return new Promise((resolve, reject) => {
                 try {
                     const games = Data.games.filter(game => {
@@ -68,23 +73,7 @@ const db = {
                     reject(error);
                 }
             })
-        },
-        getGamesByName: (name, params) => {
-            return new Promise((resolve, reject) => {
-                try {
-                    const games = Data.games.filter(game => {
-                        let titleGame = game.name.toLowerCase();
-                        if (params.idCategory) {
-                            let genres = game.genres;
-                            return (titleGame.includes(name.toLowerCase()) && genres.find(genre => genre.id == params.idCategory))
-                        } else return titleGame.includes(name.toLowerCase())
-                    })
-                    resolve(games);
-                } catch (error) {
-                    reject(error);
-                }
-            })
-        },
+        }
     }
 }
 
