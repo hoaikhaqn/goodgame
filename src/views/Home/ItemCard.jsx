@@ -1,8 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 
-export default function ItemCard(props) {
+export default function ItemCard({ dataItem, onOpenDetailPopup }) {
     const [itemLoaded, setItemLoaded] = useState(false);
-    const { dataItem, onOpenDetailPopup } = props
 
     const handlePlayVideo = (e) => {
         let vid = e.target.nextSibling
@@ -25,8 +24,9 @@ export default function ItemCard(props) {
                     </div>
                 </div>
                 <ul className="card_game__platforms">
+                    <li className="platform__item"><span>{(new Date(dataItem.releaseDate)).getFullYear()}</span></li>
                     {
-                        dataItem.platforms.map((platform_item, key) =>
+                        dataItem && dataItem.platforms.map((platform_item, key) =>
                             <li key={key} className="platform__item"><span>{platform_item}</span></li>
                         )
                     }
@@ -36,14 +36,14 @@ export default function ItemCard(props) {
                 </h4>
                 <ul className="card_game__developers items-inline">
                     {
-                        dataItem.developers.map((developer_item, key) =>
+                        dataItem && dataItem.developers.map((developer_item, key) =>
                             <li key={key} className="developer__item">{key > 0 ? ', ' : ''}<span>{developer_item}</span></li>
                         )
                     }
                 </ul>
                 <ul className="card_game__genres items-inline">
                     {
-                        dataItem.genres.map((genre_item, key) =>
+                        dataItem && dataItem.genres.map((genre_item, key) =>
                             <li key={genre_item.id} className="genre__item">{key > 0 ? ', ' : ''}<span>{genre_item.name}</span></li>
                         )
                     }

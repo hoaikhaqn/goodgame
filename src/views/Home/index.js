@@ -12,9 +12,13 @@ import db from '../../database/controller';
 export default function Home() {
     const [dataGames, setDataGames] = useState([]);
     const [dataCategory, setDataCategory] = useState([]);
-    const [categoryActived, setCategoryActived] = useState();
     const [itemActived, setItemActived] = useState();
+
+    const [categoryActived, setCategoryActived] = useState();
+    const [currentSort, setCurrentSort] = useState(null);
     const { keyword } = useContext(KeywordContext);
+
+    const ListSort = [{ label: "New Game", value: "release_date" }, { label: "Title A->Z", value: "name_asc" }]
 
     const onOpenDetailPopup = (dataItem) => {
         setItemActived(dataItem)
@@ -28,9 +32,12 @@ export default function Home() {
 
     useEffect(() => {
         // Get Data 
+        let idCategory = categoryActived;
         (async function fetchData() {
-            let res = await db.genres.getDataGenres();
-            setDataCategory(res)
+            Promise.all([db.genres.getDataGenres(), db.games.getGames({ name: keyword, idCategory, orderBy: currentSort })]).then(result => {
+                setDataCategory(result[0]);
+                setDataGames(result[1]);
+            })
         })()
     }, [])
 
@@ -38,11 +45,7 @@ export default function Home() {
         // Get games by Genres
         let idCategory = categoryActived;
         (async function fetchData() {
-            if (categoryActived) {
-                var res = await db.games.getGamesByCategory(idCategory);
-            } else {
-                var res = await db.games.getDataGames();
-            }
+            let res = db.games.getGames({ name: keyword, idCategory, orderBy: currentSort });
             setDataGames(res)
         })()
     }, [categoryActived])
@@ -51,11 +54,29 @@ export default function Home() {
         (async function fetchData() {
             if (keyword || keyword == '') {
                 let idCategory = categoryActived;
-                var res = await db.games.getGamesByName(keyword, idCategory);
+                var res = await db.games.getGames({ name: keyword, idCategory, orderBy: currentSort });
                 setDataGames(res)
             }
         })()
     }, [keyword])
+
+    // useEffect(() => {
+    //     if (currentSort) {
+    //         var objSort = {}
+    //         if (currentSort == "release_date") {
+    //             objSort[currentSort] = "desc";
+    //         }
+    //         if (currentSort == "name_asc") {
+    //             objSort.name = "asc";
+    //         }
+    //         (async function fetchData() {
+    //             let idCategory = categoryActived;
+    //             var res = await db.games.getGames({ name: keyword, idCategory, orderBy: objSort });
+    //             setDataGames(res)
+    //             setCurrentSort(objSort)
+    //         })()
+    //     }
+    // }, [currentSort])
 
     return (
         <div className="home_page" >
@@ -63,7 +84,7 @@ export default function Home() {
             <div className="product_list">
                 <div className="container">
                     <div className="top-panel">
-                        <Dropdown />
+                        <Dropdown items={ListSort} onChange={(sort) => setCurrentSort(sort)} />
                     </div>
                     <div className="product_list__wrapper">
                         <div className="row">

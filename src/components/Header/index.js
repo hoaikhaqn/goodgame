@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import { Link } from 'react-router-dom';
 import { KeywordContext } from '../../contexts/KeywordContext';
 
@@ -6,6 +6,7 @@ export default function Header() {
     const [activeSearchBar, setActiveSearchBar] = useState(false);
     const [inputText, setInputText] = useState("");
     const { keyword, setKeyword } = useContext(KeywordContext);
+    const searchRef = useRef(null);
 
     const onSubmitForm = (e) => {
         e.preventDefault();
@@ -19,6 +20,10 @@ export default function Header() {
     const onClearKeyword = (e) => {
         setActiveSearchBar(false)
     }
+
+    useEffect(() => {
+        searchRef.current.focus();
+    }, [activeSearchBar])
 
     return (
         <header>
@@ -38,7 +43,7 @@ export default function Header() {
                 </div>
                 <div className="topbar__searchbar container" data-active={activeSearchBar}>
                     <form onSubmit={(e) => onSubmitForm(e)}>
-                        <input type="text" placeholder="Search game title..." defaultValue={keyword || ''} onChange={(e) => onHandleInputChange(e)} />
+                        <input ref={searchRef} type="text" placeholder="Search game title..." defaultValue={keyword || ''} onChange={(e) => onHandleInputChange(e)} />
                     </form>
                     <button onClick={() => onClearKeyword()} className="btn__close"><span className="searchbar__icon material-icons">close</span></button>
                 </div>

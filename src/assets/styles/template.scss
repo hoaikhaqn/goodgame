@@ -128,10 +128,12 @@ header {
 
 .dropdown-wrapper {
     display: inline-block;
+    position: relative;
 
     .dropdown-header {
         margin: 0;
         padding: 0;
+        user-select: none;
 
         .dropdown-header__heading {
             cursor: pointer;
@@ -156,9 +158,28 @@ header {
 
     .dropdown-list {
         display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        margin-top: 5px;
+        padding: 10px 0;
+        background-color: $secondary-color;
+
+        &.dropdown--open {
+            display: block;
+        }
 
         .dropdown-list__item {
-            button {}
+            padding: 5px 20px;
+            white-space: nowrap;
+            font-family: $font-russo;
+
+            &.selected,
+            &:hover {
+                cursor: pointer;
+                background-color: $primary-color;
+            }
         }
     }
 }
