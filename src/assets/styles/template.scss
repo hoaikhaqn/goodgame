@@ -234,6 +234,17 @@ header {
             backface-visibility: hidden;
         }
 
+        .release_date {
+            position: absolute;
+            z-index: 1000;
+            top: 10px;
+            right: 10px;
+            background: $secondary-color;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-family: $font-kanit;
+        }
+
         &--back {
             transform: rotateY(180deg);
         }
@@ -263,6 +274,7 @@ header {
                 display: block;
                 transform: skew(10deg);
             }
+
 
             &:hover {
                 background-color: transparent;
